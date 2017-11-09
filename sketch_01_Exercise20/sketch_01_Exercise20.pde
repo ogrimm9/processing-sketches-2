@@ -1,3 +1,5 @@
+//Tyler Sugimoto 9 November 2017
+//01-Exercise20
 PImage img;
 void setup(){
   size(500,500);
