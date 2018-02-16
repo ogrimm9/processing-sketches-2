@@ -1,0 +1,15 @@
+import de.voidplus.leapmotion.*;
+LeapMotion leap;
+void setup() {
+  size(1000, 1000);
+  leap = new LeapMotion(this);
+}
+void draw() {
+  background(255);
+  for (Hand hand : leap.getHands ()) {
+      hand.draw(); 
+       println(hand.getTimeVisible());//get time
+  }
+}
+this code diplays the time when leap motion revognizes your hands by using the function (hand.getTimeVisible), which 
+allows you to get time more easily than using conditions.
