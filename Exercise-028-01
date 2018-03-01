@@ -1,5 +1,5 @@
 /*Tyler sugimoto
-Exercise-028-02
+Exercise-028-01
 Code using arduino
 */
 import processing.serial.*; 
