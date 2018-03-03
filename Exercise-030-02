@@ -1,0 +1,39 @@
+/*
+Tyler 
+Exercise-030-02
+filling Random color for
+*/
+int a=0;
+int b=0;
+void setup(){
+  size(1000,1000,P3D);
+}
+void draw(){
+  background(0);
+  pushMatrix();
+  translate(mouseX,mouseY);
+  rotateX(a);
+  rotateY(b);
+  noStroke();
+  lights();
+  fill(random(255),random(255),random(255));
+  sphere(100);
+  popMatrix();
+  pushMatrix();
+  translate(mouseX,mouseY);
+  rotateX(a);
+  rotateY(b);
+  stroke(255);
+  strokeWeight(8);
+  fill(random(255),random(255),random(255));
+  line(0,0,-300,0,0,300);
+  popMatrix();
+}
+void keyPressed(){
+  if(key==CODED){
+     if(keyCode==UP){a += 45;}
+    else if(keyCode==DOWN){a -=45;}
+    else if(keyCode==RIGHT){b+=45;}
+    else if(keyCode==LEFT){b-=45;}
+  }
+}
