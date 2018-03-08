@@ -1,0 +1,17 @@
+/*
+Tyler Sugimoto
+Exercise-031-01
+Sound()
+*/
+int a=0;
+int b=0;
+void setup() {
+  size(100, 100);
+  stroke(255);
+  strokeWeight(40);
+}
+void draw() {
+  background(0);
+  float noiseVal = noise(random(100),radom(200));
+  line(mouseX+noiseVal,width,mouseY+noiseVal,height);
+}
