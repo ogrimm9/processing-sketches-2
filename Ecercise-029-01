@@ -1,7 +1,3 @@
-/*Tyler Sugimoto
-Exercise-028-02
-Code using calculation
-*/
 import processing.serial.*; 
 import cc.arduino.*; 
 Arduino arduino; 
