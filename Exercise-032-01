@@ -1,0 +1,27 @@
+/*
+Tyler Sugimoto
+Exercise-032-01
+Spiral 
+*/
+float angle = 0.0;   
+float speed = 20;   
+float radius = 45.0; 
+  void setup() {
+  size(800, 800);
+  noStroke();
+}
+void draw() {
+  fill(0, 4);
+  rect(0, 0, width, height); 
+  angle += speed; 
+  float sinval = sin(angle);
+  float cosval = cos(angle);
+  float x = 50 + (cosval * radius);
+  float y = 50 + (sinval * radius);
+  fill(random(255),random(255),255);
+  pushMatrix();
+  translate(width/2,height/6);
+  scale(4);
+  ellipse(x, y, 2, 2);  
+  popMatrix();
+}
