@@ -1,0 +1,27 @@
+/*
+Tyler Sugimoto
+Exercise-033-01
+Pendulum
+*/
+void setup(){
+size(600,600);
+}
+float angle =PI/3;
+float velocity;
+float acceleration;
+float gravity = 0.492;
+void draw(){
+ fill(0);
+ rect(0,0,width,height);
+ translate(100,100);
+ acceleration= (-1*gravity/100)*sin(angle);
+ velocity+=acceleration;
+ angle+=velocity;
+ float x=100*sin(angle);
+ float y=100*cos(angle);
+ stroke(245);
+ line(100,100,x+100,y+100);
+ fill(50,50,200);
+ noStroke();
+ ellipse(x+100,y+100,20,20);
+}
