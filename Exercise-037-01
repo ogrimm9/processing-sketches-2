@@ -1,0 +1,50 @@
+/*
+Tyler Sugimoto
+Exercise-037-01
+Paramertize
+*/
+void setup() {
+  size(1000, 1000);
+  frameRate(2);
+}
+
+void draw() {
+  background(0);
+  int leaves5 = int(random(-10,30));
+  int leaves4 = int(random(0,30));
+  int leaves0 = int(random(10,30));
+  int leaves1 = int(random(20,30));
+  int leaves2 = int(random(30,30));
+  int leaves3= int(random(40,30));
+  vine(660,leaves5,60);
+  vine(550,leaves4,50);
+  vine(440,leaves0,40);
+  vine(330, leaves1, 30);
+  vine(220,leaves2, 20);
+  vine(110,leaves3,10);
+}
+
+void vine(int x, int numLeaves, int leafSize) {
+  stroke(255);
+  line(x, 0, x, height);
+  noStroke();
+  int gap = height / numLeaves;
+  int direction = 1;
+  for (int i = 0; i < numLeaves; i++) {
+    int r = int(random(gap));
+    leaf(x, gap*i + r, leafSize, direction);
+    direction = -direction; 
+  }
+}
+
+void leaf(int x, int y, int size, int dir) {
+  pushMatrix();
+  translate(x, y);  // Move to position
+  scale(size);      // Scale to size
+  beginShape();     // Draw the shape
+  vertex(1.0*dir, -0.7);
+  bezierVertex(1.0*dir, -0.7, 0.4*dir, -1.0, 0.0, 0.0);
+  bezierVertex(0.0, 0.0, 1.0*dir, 0.4, 1.0*dir, -0.7);
+  endShape();
+  popMatrix();
+}
