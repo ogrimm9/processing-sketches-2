@@ -1,0 +1,26 @@
+/*
+Tyler Sugimoto
+Exercise-034-01
+Organic Motion
+*/
+float x = 0.0;       
+float y = 50.0;   
+float angle = random(0.0);   
+float speed = 2.5;   
+
+void setup() {
+  size(1000, 800);
+  background(0);
+  stroke(255, 130);
+  randomSeed(121);   
+}
+
+void draw() {
+  angle += random(-0.3, 0.3);//setting the angle
+  x += cos(angle) * speed;  
+  y += sin(angle) * speed;
+  translate(x, y);
+  rotate(random(angle));//rotation
+  strokeWeight(5);
+  line(0, -50, 0, 50);
+}
