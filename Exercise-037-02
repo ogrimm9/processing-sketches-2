@@ -1,0 +1,25 @@
+/*
+Tyler Sugimoto
+Exercise-037-01
+21 March 2018
+*/
+float x = 200;
+float y = 200;
+int diameter = 10;
+void setup(){
+size(1000,800);
+smooth();
+}
+void draw(){
+background(255);
+noStroke();
+fill(100);
+ellipse(x,y,10,10);
+x = x + random(-1,1);
+y = y + random(-1,1);
+}
+void jiggle(){
+  x += round(random(-1,1));
+  y +=round(random(-1,1));
+}
+
