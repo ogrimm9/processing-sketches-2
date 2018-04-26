@@ -1,0 +1,1403 @@
+
+
+
+
+
+
+map b= new map();
+
+You tst ;
+
+
+
+
+
+void setup() {
+
+  size(576,576);
+
+  b.INIT();
+
+  tst = new You();
+
+  
+
+
+
+
+
+}
+
+void draw() {
+
+  background(255);
+
+   ellipseMode(CENTER);
+
+   rectMode(CENTER);
+
+   b.RUN();
+
+    tst.run(b);
+
+    
+
+   stroke(0,250,250);
+
+   
+
+   
+
+   
+
+ 
+
+}
+class bacteria { //class for bacteria
+
+  float energy = 5;
+
+  float x ;
+
+  float y;
+
+  int maxEnergy = 100;
+
+  
+
+  PVector acel = new PVector(0,0);
+
+  bacteria(float x_, float y_) {
+
+    x= x_;
+
+    y = y_;
+
+  }
+
+  void update() {
+
+    
+
+    x += acel.x;
+
+    y += acel.y;
+
+    acel = acel.mult(.95); //slow down, friction amount
+
+    energy += .4 - dist(x,y,width/2,height/2)/ (dist(0,0,width/2,height)); //grows in proportion to the light it has
+
+    energy -= 0.1;//loses some energy by default 
+
+    
+
+  
+
+    ellipse(x,y,energy/20,energy/20);
+
+    if (energy > maxEnergy) {
+
+      energy = maxEnergy;
+
+     
+
+    }
+
+  }
+
+  
+
+  boolean reproduce() {
+
+    if (energy == maxEnergy) {
+
+      return true;
+
+    }
+
+    return false;
+
+  }
+
+  
+
+}
+class carnivore {
+
+  float x;
+
+  float y;
+
+  float energy = 10;
+
+  float maxEnergy = 100;
+
+  float size = random(1,10);
+
+  float val = random(1);
+
+  float reproSize = random(1,50);
+
+  float repro = random(reproSize+20,maxEnergy);
+
+  int wait = 5;
+
+  //act like jelly fish, high friciton bbut move if move length is very small
+
+  
+
+  PVector move = new PVector(0,0);
+
+  
+
+  carnivore (float x_,float y_) {
+
+     x= x_;
+
+     y = y_;
+
+     
+
+  }
+
+  carnivore (float x_,float y_,float size_, float val_,float reproSize_,float repro_) {
+
+     x= x_;
+
+     y = y_;
+
+     energy = reproSize;
+
+     size = size_ + random(-.1,.1);
+
+     val = val + random(-.1,.1);
+
+     reproSize = reproSize_ + random(-.1,.1);
+
+     repro = repro_ + random(-.1,.1);
+
+     
+
+  }
+
+  void update(map MAP) {
+
+    if (wait > 0) {
+
+    wait--;
+
+    
+
+    }
+
+    MAP.eatan2(this);
+
+    if (energy > maxEnergy) {
+
+      energy = maxEnergy;
+
+    }
+
+    fill(energy*5,0,0);
+
+    ellipse(x,y,size,size);
+
+    
+
+    float min=999;
+
+    int index =0;
+
+    for (int i = 0; MAP.food.size() > i; i++) {
+
+      bacteria cur = MAP.food.get(i);
+
+      if (dist(cur.x,cur.y,x,y) < min) {
+
+        min = dist(cur.x,cur.y,x,y);
+
+        index = i;
+
+      }
+
+    }
+
+    x += move.x;
+
+    y += move.y;
+
+    move.mult(1- (size/40.0) );
+
+    energy -= size/100.0;
+
+     float dir = 0;
+
+    if (MAP.food.size() > 0) {
+
+    dir = atan2(MAP.food.get(index).x-x,MAP.food.get(index).y-y);
+
+    }
+
+    if ( sqrt(move.x * move.x + move.y *move.y) < val)  {
+
+      //then allowed to move
+
+      
+
+      PVector curMove = (new PVector(sin(dir),cos(dir))).mult(3);
+
+      energy -= size;
+
+      move.add(curMove);
+
+      
+
+    }
+
+    
+
+  }
+
+}class carnivore {
+
+  float x;
+
+  float y;
+
+  float energy = 10;
+
+  float maxEnergy = 100;
+
+  float size = random(1,10);
+
+  float val = random(1);
+
+  float reproSize = random(1,50);
+
+  float repro = random(reproSize+20,maxEnergy);
+
+  int wait = 5;
+
+  //act like jelly fish, high friciton bbut move if move length is very small
+
+  
+
+  PVector move = new PVector(0,0);
+
+  
+
+  carnivore (float x_,float y_) {
+
+     x= x_;
+
+     y = y_;
+
+     
+
+  }
+
+  carnivore (float x_,float y_,float size_, float val_,float reproSize_,float repro_) {
+
+     x= x_;
+
+     y = y_;
+
+     energy = reproSize;
+
+     size = size_ + random(-.1,.1);
+
+     val = val + random(-.1,.1);
+
+     reproSize = reproSize_ + random(-.1,.1);
+
+     repro = repro_ + random(-.1,.1);
+
+     
+
+  }
+
+  void update(map MAP) {
+
+    if (wait > 0) {
+
+    wait--;
+
+    
+
+    }
+
+    MAP.eatan2(this);
+
+    if (energy > maxEnergy) {
+
+      energy = maxEnergy;
+
+    }
+
+    fill(energy*5,0,0);
+
+    ellipse(x,y,size,size);
+
+    
+
+    float min=999;
+
+    int index =0;
+
+    for (int i = 0; MAP.food.size() > i; i++) {
+
+      bacteria cur = MAP.food.get(i);
+
+      if (dist(cur.x,cur.y,x,y) < min) {
+
+        min = dist(cur.x,cur.y,x,y);
+
+        index = i;
+
+      }
+
+    }
+
+    x += move.x;
+
+    y += move.y;
+
+    move.mult(1- (size/40.0) );
+
+    energy -= size/100.0;
+
+     float dir = 0;
+
+    if (MAP.food.size() > 0) {
+
+    dir = atan2(MAP.food.get(index).x-x,MAP.food.get(index).y-y);
+
+    }
+
+    if ( sqrt(move.x * move.x + move.y *move.y) < val)  {
+
+      //then allowed to move
+
+      
+
+      PVector curMove = (new PVector(sin(dir),cos(dir))).mult(3);
+
+      energy -= size;
+
+      move.add(curMove);
+
+      
+
+    }
+
+    
+
+  }
+
+}
+class You { //run theh if hit first, and then cahnge ang otherwise
+
+  float ang=0; 
+
+  int move = 0;
+
+ int[] evPath = {2,1,1,0,0,0};
+
+ int ev = 0;
+
+  character YOU;
+
+  You () {
+
+    YOU = new character(50,50,10);
+
+  }
+
+  void run(map MAP) {//Avalible functions, part allowed to change
+
+   this.calc();
+   ArrayList<ArrayList<float[]>> info = MAP.infoSight(YOU);
+
+   ArrayList <float[]> bacteria = info.get(0);
+   for (int I = 0; bacteria.size()>I;I++){
+     float[] cur = bacteria.get(I);
+     line(YOU.x,YOU.y, cur[0], cur[1]);
+   }
+
+   //add test if bbacteria is in wall
+
+   float speed = YOU.maxSpeed;
+
+   //YOU.x = 150;
+
+   //YOU.y = 150;
+
+    
+     //ang = -1;
+   
+   
+
+    if (move > 0) {
+
+    move--;
+
+    
+
+    }
+
+    else {
+
+       if (info.get(0).size() == 0 ) {
+
+       ang = atan2(width/2-YOU.x,height/2-YOU.y);
+
+           if (dist(width/2,height/2,YOU.x,YOU.y)  < 5) {
+
+            speed = 0;
+
+        }
+
+       
+
+    }
+
+    /*
+
+    if (YOU.hit(MAP,YOU.x + sin(ang) * YOU.maxSpeed,YOU.y + cos(ang)*YOU.maxSpeed) || move > 0) {
+
+      
+
+     
+
+      for (int i = 0; 4> i; i++) {
+
+        float dir = radians(90 * i);
+
+        if (YOU.hit(MAP,YOU.x + sin(dir),YOU.y + cos(dir)) && ! YOU.hit(MAP,YOU.x + sin(dir-PI/2.0)*YOU.maxSpeed,YOU.y + cos(dir-PI/2.0)*YOU.maxSpeed)) {
+
+          ang = radians( (degrees(dir)-90) );
+
+           move = 5;
+
+
+
+          
+
+        }
+
+        
+
+      }
+
+      
+
+       
+
+    }
+
+    */
+
+    
+
+    
+
+    
+
+    
+
+   
+
+    else{
+
+    float min = 999;
+
+    int index = -1;
+
+    
+
+    float[] value = new float[info.get(0).size()];
+
+    for (int i = 0;(info.get(0).size()) > i; i++) { //repeat for each item
+
+   ////
+
+       float[] val = info.get(0).get(i);
+
+       
+
+       
+
+       value[i] = computeDist(MAP,YOU.x,YOU.y,val[0],val[1],info.get(1))/val[2];
+
+       //value = 500 if that bacteria is in a wall
+
+       if ( YOU.hit(MAP,val[0],val[1])) {
+
+         value[i] = 9999;
+
+       }
+
+        
+
+      }
+
+      min = 999;
+
+      index = 0;
+
+      
+
+      for (int i = 0; value.length >i; i++) {
+
+        if (value[i] < min && value[i] != 9999) {
+
+          index = i;
+
+          min = value[i];
+
+        }
+
+      }
+
+      
+
+      if (info.get(0).size() > 0 && index != -1) {
+
+      float[] goal = {info.get(0).get(index)[0],info.get(0).get(index)[1]};
+
+      
+
+      if (dist(YOU.x,YOU.y,goal[0],goal[1]) < 5) {
+
+        speed = 0;
+
+      }
+
+      
+
+      
+
+    
+
+  //  atan2(goal[0]-YOU.x,goal[1]-YOU.y);
+
+ 
+
+    ang = atan2(goal[0]-YOU.x,goal[1]-YOU.y); //points towards function
+
+      }
+
+      
+
+     
+
+    }
+
+    }
+
+    if (YOU.evolveReady()) { //if ready to evolve
+
+    println(evPath[ev]);
+
+       MAP.evolve(YOU,evPath[ev]); //then evolve with choice of path 0
+
+       
+
+       ev ++;
+
+       
+
+       //println("EVOLVE");
+
+    }
+
+   
+
+   
+
+    ////
+
+    
+
+    stroke(0);
+
+    
+
+    line(YOU.x,YOU.y,YOU.x + sin(ang)*15, YOU.y + cos(ang)*15);
+
+     if (YOU.hit(MAP,YOU.x + sin(ang) * YOU.maxSpeed,YOU.y + cos(ang)*YOU.maxSpeed) || move > 0) {
+
+      
+
+    //find shorter path
+
+    PVector goalAng = new PVector(sin(ang),cos(ang));
+
+    float val = 90;
+
+      for (int i = 0; 4> i; i++) {
+
+        float dir = radians(90 * i);
+
+        if (YOU.hit(MAP,YOU.x + sin(dir),YOU.y + cos(dir)) && ! YOU.hit(MAP,YOU.x + sin(dir-PI/2.0),YOU.y + cos(dir-PI/2.0))) {
+
+         
+
+          PVector b = new PVector(sin(radians( (degrees(dir)-90) )),cos(radians( (degrees(dir)-90) )));
+
+          if (PVector.angleBetween(goalAng,b) < val) {
+
+            val = PVector.angleBetween(goalAng,b);
+
+             ang = radians( (degrees(dir)-90) );
+
+          }
+
+          
+
+         
+
+           move = 5;
+
+
+
+          
+
+        }
+
+        
+
+      }
+
+      
+
+       
+
+    }
+
+    this.calc2(MAP,ang,speed); //mandatory, makes you moves, takes angle of movement, and speed as input
+
+    
+
+  }
+
+  float computeDist(map MAP,float x_, float y_,float goalX, float goalY, ArrayList<float[]> walls) {
+
+    float x = x_;
+
+    float y =y_;
+
+    int gens = 0;
+
+    
+
+    while(dist(x,y,goalX, goalY) > 10 && gens < 50) {
+
+      float goalAng = atan2(goalX-x, goalY-y);
+
+      float nx = x + sin(goalAng) * 3;
+
+      float ny = y + cos(goalAng) * 3;
+
+       
+
+      if (YOU.hit(MAP,nx,ny)) {
+
+        float curDist = dist(x,y,goalX,goalY);
+
+        float dir = 0;
+
+        float distanceFromCenter = 0; 
+
+        //its acually angle differnce, the one with the least angle differenc eis the best one
+
+        float angHit;
+
+        float ang =0;
+
+        for (int i = 0; 4 > i; i++) {
+
+          dir = radians(i*90);
+
+          
+
+          float nx2 = x + sin(dir) * 3;//dont test if closer, but if can move and if closer than the other option of movment
+
+          float ny2 = y + cos(dir) * 3;
+
+          if (YOU.hit(MAP,nx2,ny2)) {
+
+            angHit = dir;
+
+            ang = dir + radians(-90);
+
+          }
+
+        }
+
+        x = x + sin(ang) * 3;
+
+         y = y + cos(ang) * 3;
+
+      }
+
+      else {
+
+        stroke(0);
+
+       // line(x,y,nx,ny);
+
+        x = nx;
+
+        y = ny;
+
+        noStroke();
+
+        fill(0,0,250,10);
+
+
+
+        
+
+      }
+
+      gens ++;
+
+    }
+
+    return gens;
+
+  }
+
+  
+
+  void calc() {
+
+    YOU.view();
+
+    YOU.run();
+
+  }
+
+  void calc2(map map,float ang,float speed) {
+
+    YOU.move(map,ang,min(YOU.maxSpeed,speed) ); //max speed of maxSpeed
+
+     map.eatan(YOU);
+
+  }
+
+ 
+
+}
+class character {
+
+  float eatSpeed = 3;
+
+  float x;
+
+  float y;
+
+  float size;
+
+  float energy = 85;
+
+  float seeAblity = 1;
+
+  float moveEffec = 4;
+
+  float waitEffec = .1;
+
+  float maxEnergy = 100;
+
+  float sightX = 155;
+
+  float sightY = 155;
+
+  int evolve = 0;
+
+  float maxSpeed = 1;
+
+  int colo = 0; 
+
+  character (float x_, float y_, float size_) {
+
+    x = x_;
+
+    y = y_;
+
+    size = size_;
+
+  }
+
+  void view() {
+
+    sightX = (int(120 - (dist(x,y,width/2,height/2)/(dist(0,0,width/2,height))  * 150) )) * seeAblity;
+
+    
+
+    sightY = sightX;
+
+  }
+
+  boolean evolveReady() {
+
+    if (energy+10 >= maxEnergy) {
+
+      return true;
+
+    }
+
+    return false;
+
+  }
+
+  void run() {
+
+     rectMode(CENTER);
+
+    noFill();
+
+    stroke(0);
+
+    rect(x,y,sightX,sightY);
+
+     fill(this.colo * 2,energy*2.5,0);
+     if (energy == maxEnergy) {
+       
+     noFill();
+     noStroke();
+     }
+     //ellipse(CENTER);
+
+    ellipse(x,y,size,size);
+
+    energy -= waitEffec;
+
+
+
+    
+
+    
+
+    
+
+  }
+
+  boolean hit(map Map, float x, float y) {
+
+    float[][] walls = Map.walls;
+
+    for (int i = 0; walls.length > i; i++) {
+
+        if ( abs(x-walls[i][0]) < walls[i][2]/2.0 && abs(y-walls[i][1]) <  walls[i][3]/2.0) {
+
+          return true;
+
+        }
+
+    }
+
+    return false;
+
+  }
+
+  void move(map Map ,float ang, float speed_) {
+
+    
+
+     if (! hit(Map,x + sin(ang) * speed_, y + cos(ang) * speed_) && speed_ <= maxSpeed) {
+
+     x += sin(ang) * speed_;
+
+     y += cos(ang) * speed_;
+
+     energy -= sqrt(speed_)/moveEffec;
+
+     }
+
+  }
+
+  
+
+}
+class map {//class to draw the background, **not essential to know for the game** (except for the food functions)
+
+ float[][] walls = new float[int(random(190)) ][4]; //creates random up to 90 walls
+
+ ArrayList<bacteria> food = new ArrayList(); //start list of bacteria, called food
+
+ ArrayList<carnivore> carniv = new ArrayList();
+
+ 
+
+ 
+
+ void generateMap() { //draws walls
+
+   
+
+   
+
+    noStroke();
+
+    fill(250,0,0,50);
+
+    for (int j = 0; walls.length > j; j++) {
+
+      
+
+      rect(walls[j][0],walls[j][1],walls[j][2],walls[j][3]);
+
+    }
+
+    
+
+ }
+
+ void light() { //draws light
+
+     float maxDist = dist(width/2,height/2,0,0);
+
+      noStroke();
+
+    for (int i = 0; width*height/32  > i; i++) {
+
+      int x = (i*32%width) ;
+
+      int y = (int(i*32)/int(width) ) ;
+
+      
+
+      float tint = (dist(x,y,width/2,height/2) /maxDist )*40 ;//percentage of height
+
+    
+
+    
+
+     fill(0,0,0,tint);
+
+
+
+     rect(x,y,32,32);
+
+    
+
+     
+
+    }
+
+   
+
+      
+
+   
+
+ }
+
+
+
+  
+
+  void makeWalls() { // Algorithm to make walls
+
+    
+
+    for (int i = 0;walls.length > i; i++) {
+
+      float[] val = {random(width),random(height),random(5,25),random(5,25)};
+
+      walls[i] = val;
+
+    }
+
+  }
+
+  void initCarniv() {
+
+    for (int i = 0; 30 > i; i++) {
+
+    carniv.add(new carnivore(random(width),random(height)));
+
+    carniv.get(i).energy = 69;
+
+  }
+
+  }
+
+  
+
+  void initFood() {//creates food
+
+    //for each item, create food based on light
+
+     float maxDist = dist(width/2,height/2,0,0); // amount of light max
+
+     
+
+    for (int i = 0; (width*height) > i; i++){
+
+     float x = i % width;
+
+     float y = int((i)) /int( width);
+
+     
+
+      if ( int(random(0,pow( (dist(x,y,width/2,height/2) /maxDist )*35 + 2.5,4.0))) == 0) { //Calculation of light
+
+        
+
+        food.add(new bacteria(x,y));
+
+        
+
+      }
+
+    }
+
+  }
+
+  void showCarniv() {
+
+    int offset = 0;
+
+    for (int i = 0; carniv.size()-offset > i; i++) {
+
+      carnivore cur = carniv.get(i);
+
+    
+
+    cur.update(this);
+
+    //println(cur.move.x);
+
+   if (cur.energy > cur.repro && cur.wait == 0) {
+
+    
+
+    carniv.add(new carnivore(cur.x,cur.y,cur.size,cur.val,cur.reproSize,cur.repro));
+
+    cur.wait = 5;
+
+    
+
+    cur.energy -= cur.reproSize;
+
+  }
+
+  if (cur.energy <= 0) {
+
+    offset++;
+
+    carniv.remove(i);
+
+  }
+
+ 
+
+    }
+
+  }
+
+  void showFood() { //how food is updated
+
+    int offset = 0;
+
+    for (int i = 0; food.size()-offset > i; i++) {
+
+      bacteria cur = food.get(i);
+
+      cur.update();
+
+      if (cur.reproduce()) { //if ready to reproduce, release spore nearby
+
+        food.add( new bacteria(food.get(i).x,cur.y));
+
+        food.get(food.size() -1).acel = new PVector(random(-2,2),random(-2,2));
+
+        cur.energy = 10;
+
+      }
+
+      if (cur.energy < 0) {
+
+        food.remove(i);
+
+        offset ++;
+
+      }
+
+     
+
+    }
+
+  }
+
+  void INIT() {
+
+    
+
+    this.makeWalls();
+
+    this.initFood();
+
+    //this.initCarniv();
+
+  }
+
+  void RUN() {
+
+    this.generateMap();
+
+    noStroke();
+
+    fill(0,250,0);
+
+    this.showFood();
+
+    //this.showCarniv();
+
+    //this.light();
+
+    
+
+   
+
+    
+
+  }
+
+   void eatan2(carnivore carniv) {
+
+    for (int i = 0; food.size() > i; i++) { //eating the food
+
+      bacteria cur = food.get(i);
+
+      if (dist(carniv.x,carniv.y,cur.x,cur.y) <carniv.size/2) { //bacteria is considered to be 0 pixels large
+
+        food.get(i).energy -= 1;
+
+        carniv.energy += 1;
+
+      }
+
+    }
+
+  }
+
+  void eatan(character Char) { //*important*
+
+   
+
+    for (int i = 0; food.size() > i; i++) { //eating the food
+
+      bacteria cur = food.get(i);
+
+      if (dist(Char.x,Char.y,cur.x,cur.y) < Char.size/2) { //bacteria is considered to be 0 pixels large
+
+        cur.energy -= Char.eatSpeed;
+
+        Char.energy += Char.eatSpeed;
+
+      }
+
+    }
+
+    
+
+     for (int i = 0; carniv.size() > i; i++) { //eating the carniv
+
+      carnivore cur = carniv.get(i);
+
+      if (dist(Char.x,Char.y,cur.x,cur.y) < Char.size/2 + cur.size/2) { 
+
+        cur.energy -= 15;
+
+        Char.energy -= 5;
+
+        
+
+        if (cur.energy < 0) {
+
+          Char.energy += 15;
+
+        }
+
+        
+
+      }
+
+    }
+
+  }
+
+  ArrayList<ArrayList<float[]>> infoSight(character cha) { //calculation of info for seeing
+
+    float x = cha.x; 
+
+    float y = cha.y;
+
+    float size1 = cha.sightX/2; 
+
+    float size2 = cha.sightY/2;
+
+    ArrayList<ArrayList<float[]>> info = new ArrayList(); //ArrayList of float[]
+
+     ArrayList<float[]> infoTemp = new ArrayList();
+
+    for (int i =0; food.size() > i; i++){
+
+      bacteria cur = food.get(i);
+
+     
+
+      if ( abs(x - cur.x) < size1 && abs(y-cur.y) < size2) {
+
+        float[] b= {cur.x,cur.y,cur.energy}; // *form of info*  = x,y,energy  
+
+        infoTemp.add(b);
+
+      }
+
+    }
+
+    info.add(infoTemp);
+
+    infoTemp = new ArrayList();
+
+    for (int j = 0; walls.length > j; j++) {
+
+      infoTemp.add(walls[j]);
+
+    }
+
+    info.add(infoTemp);
+
+    ArrayList<float[]> carnivo = new ArrayList();
+
+    for (int k = 0; carniv.size() > k; k++) {
+
+      carnivore cur = carniv.get(k);
+
+      float[] val = {cur.x,cur.y,cur.move.x,cur.move.y,cur.energy};
+
+      carnivo.add(val);
+
+      
+
+    }
+
+    info.add(carnivo);
+
+    return info;
+
+  }
+
+  void evolve(character Char, int choi) { //choices for evolving, not finished
+
+    float[] evolveData = { 100,1600,2250,4250,5500,9999999999999999L}; //energy required + max energy
+
+    if (Char.evolveReady()) {
+
+      if (Char.evolve == 0) {
+
+        if (choi == 0) {
+
+          Char.maxSpeed *= -4;
+
+          Char.colo = 150;
+
+        }
+
+        if (choi == 1) {
+
+          Char.size *= 4;
+
+        }
+        if (choi == 2) {
+          Char.size *= 3;
+          Char.maxSpeed *=3;
+        }
+        if (choi == 3){
+          noFill();
+              
+        }
+       
+
+      }
+
+          if (Char.evolve == 1) {
+
+            if (choi == 0) {
+
+              Char.seeAblity *= 2;
+
+              
+
+            }
+
+           if (choi == 1) {
+
+             Char.moveEffec *= 2;
+
+              Char.waitEffec *= 1.5;
+
+           }
+
+           if (choi == 2) {
+             
+             Char.maxSpeed *= 2;
+
+              
+
+           }
+
+           
+
+            } 
+
+                  if (Char.evolve == 2) {
+
+                  if (choi == 0) {
+
+                    Char.seeAblity *= 3;
+
+                    Char.maxSpeed *= 3;
+
+                    Char.eatSpeed *= 2;
+
+                    
+
+                  }
+
+                 if (choi == 1) {
+
+                   //not done yet
+
+                 }
+
+                 if (choi == 2) {
+
+                   //not done yet
+
+                    
+
+                 }
+
+                 
+
+                  }
+
+         Char.energy /= 4.1;
+
+        Char.evolve ++;
+
+        println("energy needed",evolveData[Char.evolve]);
+
+        Char.maxEnergy = evolveData[Char.evolve];
+
+  }
+
+}
+
+}
